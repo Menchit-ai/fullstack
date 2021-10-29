@@ -3,18 +3,19 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
+class TextBase(BaseModel):
+    body: Optional[str] = None
 
 
-class ItemCreate(ItemBase):
+class TextCreate(TextBase):
     pass
 
 
-class Item(ItemBase):
+class Text(TextBase):
     id: int
     owner_id: int
+    is_human_count: int
+    is_ai_count: int
 
     class Config:
         orm_mode = True
@@ -30,8 +31,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    is_active: bool
-    items: List[Item] = []
+    texts: List[Text] = []
 
     class Config:
         orm_mode = True

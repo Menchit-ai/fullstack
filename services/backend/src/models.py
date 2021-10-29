@@ -10,17 +10,17 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
 
-    items = relationship("Item", back_populates="owner")
+    texts = relationship("Text", back_populates="owner")
 
 
-class Item(Base):
-    __tablename__ = "items"
+class Text(Base):
+    __tablename__ = "texts"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
+    body = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
+    is_human_count = Column(Integer, index=True)
+    is_ai_count = Column(Integer, index=True)
 
-    owner = relationship("User", back_populates="items")
+    owner = relationship("User", back_populates="texts")

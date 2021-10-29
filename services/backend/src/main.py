@@ -21,7 +21,6 @@ def get_db():
     finally:
         db.close()
 
-
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
@@ -43,19 +42,30 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+@app.get("/texts/{text_id}", response_model=schemas.Text)
+def read_text(text_id: int, db: Session = Depends(get_db)):
+    db_text = crud.get_text(db, text_id=text_id)
+    if db_text is None:
+        raise HTTPException(status_code=404, detail="Text not found")
+    return db_text
 
-@app.post("/users/{user_id}/items/", response_model=schemas.Item)
-def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+@app.post("/users/{user_id}/texts/", response_model=schemas.Text)
+def create_text_for_user(
+    user_id: int, text: schemas.TextCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_user_item(db=db, item=item, user_id=user_id)
+    return crud.create_user_text(db=db, text=text, user_id=user_id)
 
+@app.post("/texts/{text_id}/human_count", response_model=schemas.Text)
+def count_text_as_human(text_id: int, db: Session = Depends(get_db)):
+    crud.text_is_human(db, text_id)
+    return read_text(text_id,db)
 
-@app.get("/items/", response_model=List[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
-    return items
+@app.post("/texts/{text_id}/ai_count", response_model=schemas.Text)
+def count_text_as_ai(text_id: int, db: Session = Depends(get_db)):
+    crud.text_is_ai(db, text_id)
+    return read_text(text_id,db)
 
-@app.get("/token/")
-async def get_token(token: str = Depends(oauth2_scheme)):
-    return {"token": token}
+@app.get("/texts/", response_model=List[schemas.Text])
+def read_texts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    texts = crud.get_texts(db, skip=skip, limit=limit)
+    return texts

@@ -2,15 +2,18 @@
   <div id="app">
     <img src="./assets/logo.png">
     <HelloWorld/>
+    <p> - - - - </p>
+    <ShowUser/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import ShowUser from './components/ShowUser.vue'
 
 export default {
   name: 'App',
-  components:{HelloWorld}
+  components:{HelloWorld,ShowUser}
 }
 </script>
  

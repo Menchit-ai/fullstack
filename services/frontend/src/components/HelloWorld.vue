@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div v-for="post in posts" v-bind:key="post.id">
-      <h2>{{ post.title }}</h2>
-      <p>{{ post.body }}</p>
-    </div>
+    <p> {{ message }} </p>
   </div>
 </template>
 
@@ -13,22 +10,20 @@ import axios from "axios";
 export default {
   data() {
     return {
-      posts: [],
-      past: "coucou"
+      message: ""
     };
   },
-
+  
   methods: {
-    async getData() {
+    async getData(){
       try {
-        const response = await axios.get(
-          "http://jsonplaceholder.typicode.com/posts"
-        );
-        this.posts = response.data;
+        const response = await axios.get("/");
+        this.message = response.data;
+        console.log(response)
       } catch (error) {
         console.log(error);
       }
-    },
+    }
   },
 
   created() {

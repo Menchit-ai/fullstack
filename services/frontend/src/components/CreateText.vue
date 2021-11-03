@@ -1,9 +1,9 @@
 <template>
     <form>
         <div class="field">
-            <input v-model="form.email" class="input" type="email" placeholder="email">
+            <input v-model="user_id" class="input" type="number" placeholder="user's id">
             <p/>
-            <input v-model="form.password" class="input" type="password" placeholder="pwd">
+            <input v-model="form.body" class="input" type="text" placeholder="body">
             <p/>
             <button class="button is-primary" type="button" v-on:click="submit">Submit</button>
         </div>
@@ -16,19 +16,18 @@ export default {
   data() {
     return {
       disabled:false,
-      form:{
-          email:null,
-          password:null
-      }
+      user_id:null,
+      form:{body:null}
     };
   },
   
   methods: {
     async submit(){
       try {
-        axios.post("users/",this.form)
-        this.form.email = null
-        this.form.password = null
+        const q = "users/" + this.user_id + "/texts/"
+        axios.post(q,this.form)
+        this.form.body = null
+        this.user_id = null
       } catch (error) {
         console.log(error);
       }

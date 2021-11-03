@@ -6,6 +6,8 @@
     <ShowUser/>
     <p style="color:blue; font-size:200%; font-weight:bold"> Create User </p>
     <CreateUser/>
+    <p style="color:blue; font-size:200%; font-weight:bold"> Create Text </p>
+    <CreateText/>
   </div>
 </template>
 
@@ -13,10 +15,11 @@
 import HelloWorld from './components/HelloWorld.vue'
 import ShowUser from './components/ShowUser.vue'
 import CreateUser from './components/CreateUser.vue'
+import CreateText from './components/CreateText.vue'
 
 export default {
   name: 'App',
-  components:{HelloWorld,ShowUser,CreateUser}
+  components:{HelloWorld,ShowUser,CreateUser,CreateText}
 }
 </script>
  

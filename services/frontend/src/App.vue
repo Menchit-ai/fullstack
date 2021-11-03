@@ -1,19 +1,22 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <p style="color:blue; font-size:200%; font-weight:bold"> Hello World </p>
     <HelloWorld/>
-    <p> - - - - </p>
+    <p style="color:blue; font-size:200%; font-weight:bold"> Show User </p>
     <ShowUser/>
+    <p style="color:blue; font-size:200%; font-weight:bold"> Create User </p>
+    <CreateUser/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import ShowUser from './components/ShowUser.vue'
+import CreateUser from './components/CreateUser.vue'
 
 export default {
   name: 'App',
-  components:{HelloWorld,ShowUser}
+  components:{HelloWorld,ShowUser,CreateUser}
 }
 </script>
  

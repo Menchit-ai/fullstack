@@ -40,7 +40,7 @@ export default {
     },
 
     async getUser() {
-      try {
+    try {
         if (this.id == 0){
             await this.getAllUsers()
             return
@@ -48,12 +48,10 @@ export default {
         const response = await axios.get("users/" + this.id)
         this.users = [response.data]
         this.warning = null
-      } catch (error) {
+    } catch (error) {
         this.users = null
         console.log(error)
-        if (this.id == null || this.id < 0){
-            this.warning = "Please put a valid id."
-        }
+        if (this.id == null || this.id < 0){this.warning = "Please put a valid id."}
         else{this.warning = "User not found."}
       }
     },

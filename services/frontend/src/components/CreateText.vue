@@ -2,9 +2,10 @@
     <form>
         <div class="field">
             <input v-model="user_id" class="input" type="number" placeholder="user's id">
-            <p/>
-            <input v-model="form.body" class="input" type="text" placeholder="body">
-            <p/>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Example textarea</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
             <button class="button is-primary" type="button" v-on:click="submit">Submit</button>
         </div>
     </form>

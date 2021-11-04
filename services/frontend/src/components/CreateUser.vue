@@ -1,12 +1,15 @@
 <template>
-    <form>
-        <div class="field">
-            <input v-model="form.email" class="input" type="email" placeholder="email">
-            <p/>
-            <input v-model="form.password" class="input" type="password" placeholder="pwd">
-            <p/>
-            <button class="button is-primary" type="button" v-on:click="submit">Submit</button>
-        </div>
+  <form>
+      <div class="form-group">
+        <label for="inputEmail">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </template>
 

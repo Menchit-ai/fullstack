@@ -8,6 +8,8 @@
     <CreateUser/>
     <p style="color:blue; font-size:200%; font-weight:bold"> Create Text </p>
     <CreateText/>
+    <p style="color:blue; font-size:200%; font-weight:bold"> Quizz </p>
+    <Quizz/>
   </div>
 </template>
 
@@ -16,10 +18,11 @@ import HelloWorld from './components/HelloWorld.vue'
 import ShowUser from './components/ShowUser.vue'
 import CreateUser from './components/CreateUser.vue'
 import CreateText from './components/CreateText.vue'
+import Quizz from './components/Quizz.vue'
 
 export default {
   name: 'App',
-  components:{HelloWorld,ShowUser,CreateUser,CreateText}
+  components:{HelloWorld,ShowUser,CreateUser,CreateText,Quizz}
 }
 </script>
  

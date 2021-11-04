@@ -1,1 +1,5 @@
 # fullstack
+
+```
+npm run serve
+```

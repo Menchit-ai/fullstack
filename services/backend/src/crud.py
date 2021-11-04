@@ -5,6 +5,13 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
+def init_db(db: Session):
+    if not db.query(models.User).filter(models.User.id == 0).first():
+        db_user = models.User(id=0, email="ai", hashed_password="ai")
+        db.add(db_user)
+        db.commit()
+    db.close()
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -25,6 +32,11 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def delete_user(db: Session, user_id: int):
+    db.query(models.Text).filter(models.Text.owner_id == user_id).delete()
+    db.query(models.User).filter(models.User.id == user_id).delete()
+    db.commit()
+    return 1
 
 def get_texts(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Text).offset(skip).limit(limit).all()

@@ -13,20 +13,22 @@ services:
   api:
     build: ./services/backend
     container_name: backend
-    command: "uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+    command: ["uvicorn", "src.main:app", "--host", "0.0.0.0"]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
     - "8000:8000"
     depends_on:
-    - postgre
+      - postgres
 
   # db
-  postgre:
-    image: postgres
-    container_name: postgreSQL
-    ports:
-    - "5432:5432"
+  postgres:
+    container_name: postgres
+    image: postgres:14.0
     environment:
-      POSTGRE_DB: postgres
-      POSTGRES_USER: postgres_user
-      POSTGRES_PASSWORD: postgres_pwd
-    
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"

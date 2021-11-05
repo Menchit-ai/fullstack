@@ -1,5 +1,5 @@
 # fullstack
 
 ```
-npm run serve
+docker compose -p fullstack up
 ```

@@ -35,7 +35,8 @@ export default {
         try {
             const q = "texts/" + this.current_text.id + "/human_count"
             await axios.post(q)
-            this.getData()
+            var randomText = this.texts[Math.floor(Math.random()*this.texts.length)]
+            this.current_text = randomText
       } catch (error) {
         console.log(error);
       }
@@ -45,7 +46,8 @@ export default {
         try {
             const q = "texts/" + this.current_text.id + "/ai_count"
             await axios.post(q)
-            this.getData()
+            var randomText = this.texts[Math.floor(Math.random()*this.texts.length)]
+            this.current_text = randomText
       } catch (error) {
         console.log(error);
       }
@@ -57,3 +59,7 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  @import "@/form.scss"; //Here i add extra "./"(current directory)
+</style>

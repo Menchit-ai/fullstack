@@ -31,3 +31,7 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  @import "@/form.scss"; //Here i add extra "./"(current directory)
+</style>

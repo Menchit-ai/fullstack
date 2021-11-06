@@ -20,7 +20,7 @@ class Text(Base):
     id = Column(Integer, primary_key=True, index=True)
     body = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
-    is_human_count = Column(Integer, index=True)
-    is_ai_count = Column(Integer, index=True)
+    is_human_count = Column(Integer, index=True, default=0)
+    is_ai_count = Column(Integer, index=True, default=0)
 
     owner = relationship("User", back_populates="texts")

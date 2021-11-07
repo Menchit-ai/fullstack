@@ -1,7 +1,7 @@
 <template>
     <form>
         <div class="field">
-            <input v-model="user_mail" class="input" type="email" placeholder="email">
+            <input v-model="user_mail" class="input" placeholder="pseudonym">
             <input v-model="pwd" class="input" type="password" placeholder="password">
             <div class="form-group">
               <label for="exampleFormControlTextarea1">Example textarea</label>

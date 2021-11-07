@@ -5,13 +5,52 @@
   text-align: center;
   color: #2c3e50;
 }
+
 #nav {
   padding: 30px;
 }
+
 #nav a {
   font-weight: bold;
   color: #2c3e50;
 }
+
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+h1 {
+	font-size: 60px;
+	display:inline-block;
+	border-radius: 8px;
+}
+
+p {
+	font-size: 20px;
+}
+
+button {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #DCDCDC;
+  color: white;
+}
+
+.couverture {
+  height: 300px;
+  background-image: url(ia.jpg);
+  border-radius: 20px;
+  background-size: cover;
+  border: 2px solid darkgray;
+  color: #000; text-shadow: 1px 1px 0 #fff;
 }

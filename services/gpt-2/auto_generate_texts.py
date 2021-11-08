@@ -9,11 +9,12 @@ from src.generate_unconditional_samples import sample_model
 # Establishing connection with the postgre db
 
 
-POSTGRES_USER = os.environ["POSTGRES_USER"]
-POSTGRES_PASSWORD = os.environ["POSTGRES_PASSWORD"]
-POSTGRES_DB = os.environ["POSTGRES_DB"]
+POSTGRES_USER = os.environ["BACKEND_USER"]
+POSTGRES_PASSWORD = os.environ["BACKEND_PASSWORD"]
+POSTGRES_DB = os.environ["BACKEND_DB"]
+BACKEND_DB = os.environ["BACKEND_DB"]
 
-SQLALCHEMY_DATABASE_URL = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_DB}/postgres'
+SQLALCHEMY_DATABASE_URL = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@postgres/{BACKEND_DB}'
 # SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:password@localhost/postgres'
 
 cursor = create_engine(SQLALCHEMY_DATABASE_URL).connect()

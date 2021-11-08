@@ -1,6 +1,10 @@
+import os 
+parent_dir_path = os.path.dirname(os.path.realpath(__file__))
+
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.sqltypes import String
 from starlette.middleware.cors import CORSMiddleware

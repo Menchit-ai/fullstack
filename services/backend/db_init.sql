@@ -1,0 +1,8 @@
+CREATE DATABASE backend;
+CREATE DATABASE kong;
+
+CREATE USER usr_kong WITH PASSWORD 'pwd_kong';
+CREATE USER usr_backend WITH PASSWORD 'pwd_backend';
+
+GRANT ALL PRIVILEGES ON DATABASE backend TO usr_backend;
+GRANT ALL PRIVILEGES ON DATABASE kong TO usr_kong;

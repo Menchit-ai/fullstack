@@ -9,3 +9,6 @@ services:
     paths:
     - /api
     strip_path: false
+
+plugins:
+- name: bot-detection

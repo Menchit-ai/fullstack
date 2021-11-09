@@ -1,10 +1,5 @@
 version: '3.8'
 
-# network for kong
-networks:
-  kong-net:
-    driver: bridge
-
 services:
   # frontend
   web:
@@ -14,7 +9,7 @@ services:
     ports:
     - "8080:8080"
     depends_on: 
-      - api
+      - backend
     # restart: always
     networks:
       - default
@@ -25,13 +20,15 @@ services:
     container_name: backend
     command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8005"]
     environment:
-      BACKEND_USER: usr_backend
-      BACKEND_PASSWORD: pwd_backend
-      BACKEND_DB: backend
+      BACKEND_USER: ${BACKEND_USER}
+      BACKEND_PASSWORD: ${BACKEND_PASSWORD}
+      BACKEND_DB: ${BACKEND_DB}
     ports:
       - "8005:8005"
     depends_on:
       postgres:
+        condition: service_healthy
+      kong:
         condition: service_healthy
     # restart: always
     networks:
@@ -42,9 +39,9 @@ services:
     container_name: postgres
     image: postgres:14.0
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -65,11 +62,12 @@ services:
     container_name: gpt2
     command: "python3 auto_generate_texts.py"
     environment:
-      BACKEND_USER: usr_backend
-      BACKEND_PASSWORD: pwd_backend
-      BACKEND_DB: backend
+      BACKEND_USER: ${BACKEND_USER}
+      BACKEND_PASSWORD: ${BACKEND_PASSWORD}
+      BACKEND_DB: ${BACKEND_DB}
     depends_on:
-      - api
+      postgres:
+        condition: service_healthy
     networks:
       - default
 
@@ -79,8 +77,8 @@ services:
     networks:
       - default
     environment:
-      KONG_DATABASE: "off"
-      KONG_DECLARATIVE_CONFIG: kong.yml
+      KONG_DATABASE: ${KONG_DATABASE}
+      KONG_DECLARATIVE_CONFIG: ${KONG_DECLARATIVE_CONFIG}
     healthcheck:
       test: [“CMD”, “curl”, “-f”, “http://kong:8000”]
       interval: 5s
@@ -91,3 +89,15 @@ services:
       - "8001:8001/tcp"
       - "8443:8443/tcp"
       - "8444:8444/tcp"
+
+  keycloak:
+    image: jboss/keycloak:15.0.1
+    container_name: keycloak
+    networks:
+      - default
+    ports:
+      - "8085:8080"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy

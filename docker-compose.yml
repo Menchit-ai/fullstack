@@ -1,5 +1,10 @@
 version: '3.8'
 
+# network for kong
+networks:
+  kong-net:
+    driver: bridge
+
 services:
   # frontend
   web:
@@ -11,22 +16,26 @@ services:
     depends_on: 
       - api
     # restart: always
+    networks:
+      - default
 
   #backend
-  api:
+  backend:
     build: ./services/backend
     container_name: backend
-    command: ["uvicorn", "src.main:app", "--host", "0.0.0.0"]
+    command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8005"]
     environment:
-      BACKEND_USER: ${BACKEND_USER}
-      BACKEND_PASSWORD: ${BACKEND_PASSWORD}
-      BACKEND_DB: ${BACKEND_DB}
+      BACKEND_USER: usr_backend
+      BACKEND_PASSWORD: pwd_backend
+      BACKEND_DB: backend
     ports:
-      - "8000:8000"
+      - "8005:8005"
     depends_on:
       postgres:
         condition: service_healthy
     # restart: always
+    networks:
+      - default
 
   # db
   postgres:
@@ -34,8 +43,8 @@ services:
     image: postgres:14.0
     environment:
       POSTGRES_DB: postgres
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
@@ -47,7 +56,8 @@ services:
       timeout: 5s
       retries: 5
     # restart: always
-
+    networks:
+      - default
 
   # gpt-2
   gpt2:
@@ -55,8 +65,29 @@ services:
     container_name: gpt2
     command: "python3 auto_generate_texts.py"
     environment:
-      BACKEND_USER: ${BACKEND_USER}
-      BACKEND_PASSWORD: ${BACKEND_PASSWORD}
-      BACKEND_DB: ${BACKEND_DB}
+      BACKEND_USER: usr_backend
+      BACKEND_PASSWORD: pwd_backend
+      BACKEND_DB: backend
     depends_on:
       - api
+    networks:
+      - default
+
+  kong:
+    build: ./services/kong
+    container_name: kong
+    networks:
+      - default
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: kong.yml
+    healthcheck:
+      test: [“CMD”, “curl”, “-f”, “http://kong:8000”]
+      interval: 5s
+      timeout: 2s
+      retries: 15
+    ports:
+      - "8000:8000/tcp"
+      - "8001:8001/tcp"
+      - "8443:8443/tcp"
+      - "8444:8444/tcp"

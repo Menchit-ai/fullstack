@@ -18,7 +18,7 @@ def init_db(db: Session):
         db.commit()
 
         i = 1
-        for text in init_text.get_init_texts():
+        for text in [init_text.segreg, init_text.hamlet, init_text.rnj]:
             body = text
             n_text = models.Text(id=i,body=body,owner_id=randint(1,2))
             db.add(n_text)

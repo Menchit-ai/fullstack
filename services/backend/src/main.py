@@ -1,10 +1,13 @@
-import os 
+import os
+
 parent_dir_path = os.path.dirname(os.path.realpath(__file__))
 
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from fastapi.security import OAuth2PasswordBearer
+from keycloak import KeycloakOpenID
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.sqltypes import String
 from starlette.middleware.cors import CORSMiddleware
@@ -20,12 +23,20 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=".*0.*",
+    allow_origin_regex=".*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
 )
 
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# Configure client
+keycloak_openid = KeycloakOpenID(server_url="http://localhost:8080/auth/",
+                                 client_id="backend",
+                                 realm_name="fullstack",
+                                 client_secret_key="97e13e2d-90e6-447f-9e3b-914b27653821")
 
 # Dependency
 def get_db():
@@ -37,7 +48,7 @@ def get_db():
 
 @app.get("/api")
 def hello_world():
-    return "hello world !"
+    return "Bienvenue sur notre site de quizz : IA ou humain ?"
 
 @app.post("/api/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):

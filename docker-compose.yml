@@ -2,14 +2,17 @@ version: '3.8'
 
 services:
   # frontend
-  web:
+  frontend:
     build: ./services/frontend
     container_name: frontend
     command: npm run serve
     ports:
     - "8080:8080"
     depends_on: 
-      - backend
+      backend:
+        condition: service_started
+      kong:
+        condition: service_healthy
     # restart: always
     networks:
       - default
@@ -27,8 +30,6 @@ services:
       - "8005:8005"
     depends_on:
       postgres:
-        condition: service_healthy
-      kong:
         condition: service_healthy
     # restart: always
     networks:
@@ -51,7 +52,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 15
     # restart: always
     networks:
       - default
@@ -79,11 +80,15 @@ services:
     environment:
       KONG_DATABASE: ${KONG_DATABASE}
       KONG_DECLARATIVE_CONFIG: ${KONG_DECLARATIVE_CONFIG}
+      KONG_CLIENT_KEY: ${KONG_CLIENT_KEY}
     healthcheck:
-      test: [“CMD”, “curl”, “-f”, “http://kong:8000”]
-      interval: 5s
-      timeout: 2s
+      test: ["CMD", "kong", "health"]
+      interval: 10s
+      timeout: 5s
       retries: 15
+    depends_on:
+      keycloak:
+        condition: service_healthy
     ports:
       - "8000:8000/tcp"
       - "8001:8001/tcp"
@@ -98,6 +103,11 @@ services:
     ports:
       - "8085:8080"
     env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/auth/realms/master"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
     depends_on:
       postgres:
         condition: service_healthy

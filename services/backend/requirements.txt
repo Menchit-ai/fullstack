@@ -4,3 +4,4 @@ SQLAlchemy==1.4.26
 uvicorn[standard]
 psycopg2
 numpy
+python-keycloak

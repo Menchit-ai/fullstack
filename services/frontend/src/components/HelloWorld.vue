@@ -24,8 +24,7 @@ export default {
     async getData(){
       try {
         const response = await axios.get("/");
-        this.message = "Bienvenue sur notre site de quizz : IA ou humain ?";
-        console.log(response)
+        this.message = response.body;
       } catch (error) {
         console.log(error);
       }

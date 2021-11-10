@@ -12,3 +12,11 @@ services:
 
 plugins:
 - name: bot-detection
+
+plugins:
+- name: openid-connect
+  route: backend
+  config: 
+    client_id: kong
+    client_secret: ${KONG_CLIENT_KEY}
+    discovery: http://keycloak:8085/auth/realms/fullstack/.well-known/openid-configuration | python -mjson.tool

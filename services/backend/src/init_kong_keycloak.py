@@ -19,7 +19,7 @@ REALM_NAME = "master"
 
 
 keycloak_admin = KeycloakAdmin(
-    server_url="http://keycloak:8080/auth/",
+    server_url=KEYCLOAK_URL,
     username=USERNAME,
     password=PASSWORD,
     verify=True
@@ -58,7 +58,7 @@ services = [
     },
     {
         'name': "front_service",
-        'url': f'http://frontend:8085/',
+        'url': 'http://frontend:8085/',
         'path': "front"
     }
 ]

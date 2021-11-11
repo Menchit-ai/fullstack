@@ -7,7 +7,7 @@ services:
     container_name: frontend
     command: npm run serve
     ports:
-    - "8080:8080"
+    - "8085:8085"
     depends_on: 
       backend:
         condition: service_started
@@ -22,14 +22,21 @@ services:
     build: ./services/backend
     container_name: backend
     command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8005"]
+    env_file: .env
     environment:
       BACKEND_USER: ${BACKEND_USER}
       BACKEND_PASSWORD: ${BACKEND_PASSWORD}
       BACKEND_DB: ${BACKEND_DB}
+      KONG_HOST_IP: kong
+      KONG_PORT: 8001
     ports:
       - "8005:8005"
     depends_on:
       postgres:
+        condition: service_healthy
+      kong:
+        condition: service_healthy
+      keycloak:
         condition: service_healthy
     # restart: always
     networks:
@@ -50,7 +57,7 @@ services:
       - ./services/backend/db_init.sql:/docker-entrypoint-initdb.d/create_tables.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 15
     # restart: always
@@ -69,8 +76,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      backend:
+        condition: service_started
     networks:
       - default
+    restart: on-failure
 
   kong-migration:
     image: kong:2.6.0
@@ -92,14 +102,12 @@ services:
         condition: service_healthy
 
   kong:
-    image: kong:2.6.0
+    build: ./services/kong
     container_name: kong
     networks:
       - default
     env_file: .env
     restart: on-failure
-    volumes:
-      - ./kong.yaml:/kong.yaml
     environment:
       KONG_DATABASE: ${KONG_DATABASE}
       KONG_PG_HOST: ${KONG_PG_HOST}
@@ -108,6 +116,7 @@ services:
       KONG_PG_PASSWORD: ${KONG_PG_PASSWORD}
       KONG_PG_DATABASE: ${KONG_PG_DATABASE}
       KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_PLUGINS: "oidc,bundled"
     healthcheck:
       test: ["CMD", "kong", "health"]
       interval: 5s
@@ -128,12 +137,10 @@ services:
   keycloak:
     image: jboss/keycloak:15.0.1
     container_name: keycloak
-    volumes:
-      - ./realm.json:${KEYCLOAK_IMPORT}
     networks:
       - default
     ports:
-      - "8085:8080"
+      - "8080:8080"
     env_file: .env
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/auth/realms/master"]
@@ -143,3 +150,4 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    restart: on-failure

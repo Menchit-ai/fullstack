@@ -6,8 +6,10 @@ from sqlalchemy import create_engine
 
 from src.generate_unconditional_samples import sample_model
 
-# Establishing connection with the postgre db
+# give time to the backend to initialize the db
+time.sleep(180)
 
+# Establishing connection with the postgre db
 
 POSTGRES_USER = os.environ["BACKEND_USER"]
 POSTGRES_PASSWORD = os.environ["BACKEND_PASSWORD"]

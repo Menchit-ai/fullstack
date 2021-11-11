@@ -1,7 +1,3 @@
-import os
-
-parent_dir_path = os.path.dirname(os.path.realpath(__file__))
-
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -11,6 +7,8 @@ from keycloak import KeycloakOpenID
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.sqltypes import String
 from starlette.middleware.cors import CORSMiddleware
+
+from . import init_kong_keycloak
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -28,7 +26,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
-
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

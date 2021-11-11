@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button v-on:click="getUser">Get user n°</button>
-    <input type="number" placeholder="user id" v-model="id">
+    <button v-on:click="getUser">Get user : </button>
+    <input type="text" placeholder="put 0 to get all users" v-model="id">
 
     <div v-if="users !== null">
         <div v-for="user in users" :key="user.id">

@@ -38,7 +38,7 @@ services:
   # db
   postgres:
     container_name: postgres
-    image: postgres:14.0
+    image: postgres:9.5
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -72,34 +72,64 @@ services:
     networks:
       - default
 
+  kong-migration:
+    image: kong:2.6.0
+    container_name: kong-migration
+    command: "kong migrations bootstrap --v"
+    networks:
+      - default
+    restart: on-failure
+    env_file: .env
+    environment:
+      KONG_DATABASE: ${KONG_DATABASE}
+      KONG_PG_HOST: ${KONG_PG_HOST}
+      KONG_PG_PORT: ${KONG_PG_PORT}
+      KONG_PG_USER: ${KONG_PG_USER}
+      KONG_PG_PASSWORD: ${KONG_PG_PASSWORD}
+      KONG_PG_DATABASE: ${KONG_PG_DATABASE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   kong:
-    build: ./services/kong
+    image: kong:2.6.0
     container_name: kong
     networks:
       - default
+    env_file: .env
+    restart: on-failure
+    volumes:
+      - ./kong.yaml:/kong.yaml
     environment:
       KONG_DATABASE: ${KONG_DATABASE}
-      KONG_DECLARATIVE_CONFIG: ${KONG_DECLARATIVE_CONFIG}
-      KONG_CLIENT_KEY: ${KONG_CLIENT_KEY}
+      KONG_PG_HOST: ${KONG_PG_HOST}
+      KONG_PG_PORT: ${KONG_PG_PORT}
+      KONG_PG_USER: ${KONG_PG_USER}
+      KONG_PG_PASSWORD: ${KONG_PG_PASSWORD}
+      KONG_PG_DATABASE: ${KONG_PG_DATABASE}
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
     healthcheck:
       test: ["CMD", "kong", "health"]
       interval: 5s
       timeout: 5s
       retries: 15
     depends_on:
-      keycloak:
-        condition: service_healthy
+      - kong-migration
     ports:
       - "8000:8000/tcp"
-      - "8001:8001/tcp"
       - "8443:8443/tcp"
+      - "8001:8001/tcp"
       - "8444:8444/tcp"
+      - "8002:8002/tcp"
+      - "8445:8445/tcp"
+      - "8003:8003/tcp"
+      - "8004:8004/tcp"
 
   keycloak:
     image: jboss/keycloak:15.0.1
     container_name: keycloak
     volumes:
-      - ./realm.json:/realm-init.json
+      - ./realm.json:${KEYCLOAK_IMPORT}
     networks:
       - default
     ports:

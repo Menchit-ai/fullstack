@@ -10,8 +10,8 @@ from . import models, schemas, init_text
 def init_db(db: Session):
     if not db.query(models.User).filter(models.User.id == 0).first():
         ai_user = models.User(id=0, email="ai", hashed_password="ai")
-        h1_user = models.User(id=1, email="Thomas", hashed_password="5dfcf9ef1fb1ecbce32fefe37ae99aff68832a7e2ac74f52daa5a1bcd8038118")
-        h2_user = models.User(id=2, email="Lilian", hashed_password="23f8ad21cf2cf1a141a7bbcf313588ec4b41e409e3a801e0c8cae97eb0a22afe")
+        h1_user = models.User(id=1000, email="Thomas", hashed_password="5dfcf9ef1fb1ecbce32fefe37ae99aff68832a7e2ac74f52daa5a1bcd8038118")
+        h2_user = models.User(id=2000, email="Lilian", hashed_password="23f8ad21cf2cf1a141a7bbcf313588ec4b41e409e3a801e0c8cae97eb0a22afe")
         db.add(ai_user)
         db.add(h1_user)
         db.add(h2_user)
@@ -20,7 +20,7 @@ def init_db(db: Session):
         i = 1
         for text in [init_text.segreg, init_text.hamlet, init_text.rnj]:
             body = text
-            n_text = models.Text(id=i,body=body,owner_id=randint(1,2))
+            n_text = models.Text(id=i*1000,body=body,owner_id=randint(1,2)*1000)
             db.add(n_text)
             db.commit()
             i += 1

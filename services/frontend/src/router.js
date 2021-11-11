@@ -11,7 +11,13 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: "/",
+    beforeEnter: (to, from, next) => {
+      next("/home");
+    }
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: HelloWorld
   },
@@ -39,7 +45,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: "/front/",
   routes
 })
 

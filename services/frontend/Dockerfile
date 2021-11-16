@@ -15,5 +15,5 @@ COPY . .
 # construit l'app pour la production en la minifiant
 RUN npm run build
 
-EXPOSE 8080
-CMD [ "npm", "run", "serve" ]
+EXPOSE 8085
+CMD [ "npm", "run", "serve", "-- --port", "8085" ]

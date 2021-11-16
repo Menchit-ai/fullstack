@@ -5,7 +5,7 @@ services:
   frontend:
     build: ./services/frontend
     container_name: frontend
-    command: npm run serve
+    command: npm run serve -- --port 8085
     ports:
     - "8085:8085"
     depends_on: 
@@ -57,7 +57,7 @@ services:
       - ./services/backend/db_init.sql:/docker-entrypoint-initdb.d/create_tables.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
+      interval: 20s
       timeout: 5s
       retries: 15
     # restart: always
@@ -65,22 +65,22 @@ services:
       - default
 
   # gpt-2
-  gpt2:
-    build: ./services/gpt-2
-    container_name: gpt2
-    command: "python3 auto_generate_texts.py"
-    environment:
-      BACKEND_USER: ${BACKEND_USER}
-      BACKEND_PASSWORD: ${BACKEND_PASSWORD}
-      BACKEND_DB: ${BACKEND_DB}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      backend:
-        condition: service_started
-    networks:
-      - default
-    restart: on-failure
+  # gpt2:
+  #   build: ./services/gpt-2
+  #   container_name: gpt2
+  #   command: "python3 auto_generate_texts.py"
+  #   environment:
+  #     BACKEND_USER: ${BACKEND_USER}
+  #     BACKEND_PASSWORD: ${BACKEND_PASSWORD}
+  #     BACKEND_DB: ${BACKEND_DB}
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     backend:
+  #       condition: service_started
+  #   networks:
+  #     - default
+  #   restart: on-failure
 
   kong-migration:
     image: kong:2.6.0
@@ -133,6 +133,7 @@ services:
       - "8445:8445/tcp"
       - "8003:8003/tcp"
       - "8004:8004/tcp"
+
 
   keycloak:
     image: jboss/keycloak:15.0.1

@@ -1,11 +1,32 @@
 import hashlib
+import os
 from random import randint
 
+from keycloak import KeycloakAdmin
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.sqltypes import String
 
-from . import models, schemas, init_text
+from . import init_text, models, schemas
 
+KEYCLOAK_HOST_IP = os.environ["KEYCLOAK_HOST"]
+KEYCLOAK_PORT = os.environ["KEYCLOAK_PORT"]
+
+KEYCLOAK_URL = os.environ["KEYCLOAK_URL"]
+USERNAME = "admin"
+PASSWORD = 'Pa55w0rd'
+MASTER_REALM_NAME = "master"
+REALM_NAME = "master"
+
+
+
+def get_keycloak_admin():
+    keycloak_admin = KeycloakAdmin(
+        server_url=KEYCLOAK_URL,
+        username=USERNAME,
+        password=PASSWORD,
+        verify=True
+    )
+    return keycloak_admin
 
 def init_db(db: Session):
     if not db.query(models.User).filter(models.User.id == 0).first():
@@ -44,6 +65,15 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
+    keycloak_admin = get_keycloak_admin()
+
+    keycloak_admin.create_user({
+        "username": user.email
+    })
+    user_id = keycloak_admin.get_user_id(user.email)
+    keycloak_admin.set_user_password(user_id, user.password, temporary=False)
+
     return db_user
 
 def delete_user(db: Session, user_id: int):

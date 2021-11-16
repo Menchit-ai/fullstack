@@ -1,5 +1,5 @@
 import os
-
+import time
 import requests
 from keycloak import KeycloakAdmin
 
@@ -42,9 +42,11 @@ if not kong_created:
 # saving the id of kong
 for client in keycloak_admin.get_clients():
     if client["name"] == "kong": kong_id = client["id"]
+if not kong_created : keycloak_admin.generate_client_secrets(kong_id)["value"]
+
 
 # storing kong's key as a client
-kong_key = keycloak_admin.generate_client_secrets(kong_id)["value"]
+kong_key = keycloak_admin.get_client_secrets(kong_id)["value"]
 
 introspection_url = f'http://{KEYCLOAK_HOST_IP}:{KEYCLOAK_PORT}/auth/realms/{REALM_NAME}/protocol/openid-connect/token/introspect'
 discovery_url = f'http://{KEYCLOAK_HOST_IP}:{KEYCLOAK_PORT}/auth/realms/{REALM_NAME}/.well-known/openid-configuration'
@@ -54,34 +56,44 @@ services = [
     {
         'name': 'api_service',
         'url': 'http://backend:8005/',
-        'path': "api"
+        'host': 'backend:8005',
+        'path': "/api"
     },
     {
         'name': "front_service",
         'url': 'http://frontend:8085/',
-        'path': "front"
+        'host': 'frontend:8085',
+        'path': "/front"
     }
 ]
 print("Starting initialisation of kong")
 
+os.system("deck --kong-addr  http://kong:8001 --timeout 600 sync")
+
 for service in services:
     name = service["name"]
-    if requests.get(f"http://{KONG_HOST_IP}:{KONG_PORT}/services/{name}").status_code == 404:
-        response = requests.post(f"http://{KONG_HOST_IP}:{KONG_PORT}/services/",data = service)
-        created_service_id = response.json()["id"]
+    # create service
+    response = requests.get(f"http://{KONG_HOST_IP}:{KONG_PORT}/services/{name}")
+    created_service_id = response.json()["id"]
 
-        oidc_data = {
-            'name': 'oidc',
-            'config.client_id': f'{kong_id}',
-            'config.client_secret': f'{kong_key}',
-            'config.realm': f'{REALM_NAME}',
-            'config.bearer_only': 'true',
-            'config.introspection_endpoint':introspection_url,
-            'config.discovery':discovery_url
-        }
-        requests.post(f'http://{KONG_HOST_IP}:{KONG_PORT}/services/{created_service_id}/plugins', data=oidc_data)
+    # Create route
+    data = {
+        'service.id': f'{created_service_id}',
+        'hosts[]': f'{service["host"]}',
+        'paths[]': f'/{service["path"]}',
+    }
 
-        print(name, "created !")
+    oidc_data = {
+        'name': 'oidc',
+        'config.client_id': f'{kong_id}',
+        'config.client_secret': f'{kong_key}',
+        'config.realm': f'{REALM_NAME}',
+        'config.bearer_only': 'true',
+        'config.introspection_endpoint':introspection_url,
+        'config.discovery':discovery_url
+    }
+    requests.put(f'http://{KONG_HOST_IP}:{KONG_PORT}/services/{created_service_id}/plugins', data=oidc_data)
 
-    else: print(name, "already exists !")
+    print(name, "updated !")
 
+print("Kong and Keycloak configured.")

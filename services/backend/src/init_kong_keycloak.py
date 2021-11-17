@@ -72,16 +72,9 @@ os.system("deck --kong-addr  http://kong:8001 --timeout 600 sync")
 
 for service in services:
     name = service["name"]
-    # create service
+    # get service id
     response = requests.get(f"http://{KONG_HOST_IP}:{KONG_PORT}/services/{name}")
     created_service_id = response.json()["id"]
-
-    # Create route
-    data = {
-        'service.id': f'{created_service_id}',
-        'hosts[]': f'{service["host"]}',
-        'paths[]': f'/{service["path"]}',
-    }
 
     oidc_data = {
         'name': 'oidc',
@@ -92,7 +85,7 @@ for service in services:
         'config.introspection_endpoint':introspection_url,
         'config.discovery':discovery_url
     }
-    requests.put(f'http://{KONG_HOST_IP}:{KONG_PORT}/services/{created_service_id}/plugins', data=oidc_data)
+    # requests.post(f'http://{KONG_HOST_IP}:{KONG_PORT}/services/{created_service_id}/plugins', data=oidc_data)
 
     print(name, "updated !")
 

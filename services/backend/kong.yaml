@@ -3,42 +3,14 @@ services:
 - connect_timeout: 60000
   host: backend
   name: api_service
-  path: /
-  plugins:
-  - config:
-      bearer_only: "true"
-      client_id: "***"
-      client_secret: "***"
-      discovery: http://keycloak:8080/auth/realms/master/.well-known/openid-configuration
-      filters: null
-      introspection_endpoint: http://keycloak:8080/auth/realms/master/protocol/openid-connect/token/introspect
-      introspection_endpoint_auth_method: null
-      logout_path: /logout
-      realm: master
-      recovery_page_path: null
-      redirect_after_logout_uri: /
-      redirect_uri_path: null
-      response_type: code
-      scope: openid
-      session_secret: null
-      ssl_verify: "no"
-      token_endpoint_auth_method: client_secret_post
-    enabled: true
-    name: oidc
-    protocols:
-    - grpc
-    - grpcs
-    - http
-    - https
+  path: /api
   port: 8005
   protocol: http
   read_timeout: 60000
   retries: 5
   routes:
-  - hosts:
-    - backend:8005
-    https_redirect_status_code: 426
-    id: 7b914db5-b3d9-465f-8eb6-c7a2195d0abc
+  - https_redirect_status_code: 426
+    id: c39777c5-d697-4299-ac8e-3aa8cc20acad
     path_handling: v0
     paths:
     - /api
@@ -54,42 +26,14 @@ services:
 - connect_timeout: 60000
   host: frontend
   name: front_service
-  path: /
-  plugins:
-  - config:
-      bearer_only: "true"
-      client_id: "***"
-      client_secret: "***"
-      discovery: http://keycloak:8080/auth/realms/master/.well-known/openid-configuration
-      filters: null
-      introspection_endpoint: http://keycloak:8080/auth/realms/master/protocol/openid-connect/token/introspect
-      introspection_endpoint_auth_method: null
-      logout_path: /logout
-      realm: master
-      recovery_page_path: null
-      redirect_after_logout_uri: /
-      redirect_uri_path: null
-      response_type: code
-      scope: openid
-      session_secret: null
-      ssl_verify: "no"
-      token_endpoint_auth_method: client_secret_post
-    enabled: true
-    name: oidc
-    protocols:
-    - grpc
-    - grpcs
-    - http
-    - https
+  path: /front
   port: 8085
   protocol: http
   read_timeout: 60000
   retries: 5
   routes:
-  - hosts:
-    - frontend:8085
-    https_redirect_status_code: 426
-    id: edd274ca-8af1-4539-b8ad-dcedcfe70c46
+  - https_redirect_status_code: 426
+    id: c1cd1a5e-b374-48ba-a4c9-170fac152868
     path_handling: v0
     paths:
     - /front

@@ -4,7 +4,7 @@
             <input v-model="user_mail" class="input" placeholder="pseudonym">
             <input v-model="pwd" class="input" type="password" placeholder="password">
             <div class="form-group">
-              <label for="exampleFormControlTextarea1">Example textarea</label>
+              <label for="exampleFormControlTextarea1">Text area</label>
               <textarea v-model="form.body" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
             <button class="button is-primary" type="button" v-on:click="submit">Submit</button>

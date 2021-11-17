@@ -35,8 +35,13 @@ export default {
     async getAllUsers() {
         this.warning = null
         this.users = null
-        const response = await axios.get("users/")
-        this.users = response.data
+        try{
+          const response = await axios.get("users/")
+          this.users = response.data
+        }catch (error) {
+          console.log(error )
+        }
+        
     },
 
     async getUser() {

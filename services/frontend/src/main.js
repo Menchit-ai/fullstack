@@ -7,8 +7,7 @@ import router from './router.js';
 
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://kong:8000/api/';  // the FastAPI backend
-axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*" // for all requests
+axios.defaults.baseURL = 'http://localhost:8000/api/';  // the FastAPI backend
 
 Vue.config.productionTip = false;
 

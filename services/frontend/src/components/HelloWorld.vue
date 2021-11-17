@@ -22,16 +22,12 @@ export default {
   
   methods: {
     async getData(){
-      const r1 = await axios.get("http://kong:8000/", {withCredentials: true})
-      console.log(r1)
-      const r2 = await axios.get("http://kong:8001/", {withCredentials: true})
-      console.log(r2)
-      // try {
-      //   const response = await axios.get("/");
-      //   this.message = response.body;
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        const response = await axios.get("/");
+        this.message = response.body;
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 

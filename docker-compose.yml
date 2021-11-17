@@ -9,9 +9,8 @@ services:
   frontend:
     build: ./services/frontend
     container_name: frontend
-    command: npm run serve -- --port 8085
     ports:
-    - "8085:8085"
+    - "8085:3000"
     depends_on: 
       backend:
         condition: service_started

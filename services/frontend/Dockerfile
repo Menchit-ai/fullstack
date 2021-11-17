@@ -12,8 +12,10 @@ RUN npm install
 # copie les fichiers et dossiers du projet dans le dossier de travail (par exemple : le dossier 'app')
 COPY . .
 
-# construit l'app pour la production en la minifiant
+# # construit l'app pour la production en la minifiant
 RUN npm run build
 
-EXPOSE 8085
-CMD [ "npm", "run", "serve", "-- --port", "8085" ]
+RUN npm install --global lite-server
+
+EXPOSE 3000
+CMD [ "lite-server", "--baseDir=dist", "--unhandled-rejections=none" ]

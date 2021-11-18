@@ -18,4 +18,4 @@ RUN npm run build
 RUN npm install --global lite-server
 
 EXPOSE 3000
-CMD [ "lite-server", "--baseDir=dist", "--unhandled-rejections=none" ]
+CMD [ "lite-server", "--baseDir=dist" ]

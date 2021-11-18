@@ -23,7 +23,7 @@ export default {
   methods: {
     async getData(){
       try {
-        const response = await axios.get("/");
+        const response = await axios.get("/").catch(error => {console.log(error)})
         this.message = response.body;
       } catch (error) {
         console.log(error);

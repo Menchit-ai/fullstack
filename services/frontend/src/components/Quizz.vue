@@ -22,7 +22,7 @@ export default {
   methods: {
     async getData(){
       try {
-        const response = await axios.get("/texts/")
+        const response = await axios.get("/texts/").catch(error => {console.log(error)})
         this.texts = response.data
         var randomText = this.texts[Math.floor(Math.random()*this.texts.length)]
         this.current_text = randomText
@@ -34,7 +34,7 @@ export default {
     async isHuman(){
         try {
             const q = "texts/" + this.current_text.id + "/human_count"
-            await axios.post(q)
+            await axios.post(q).catch(error => {console.log(error)})
             var randomText = this.texts[Math.floor(Math.random()*this.texts.length)]
             this.current_text = randomText
       } catch (error) {
@@ -45,7 +45,7 @@ export default {
     async isAI(){
         try {
             const q = "texts/" + this.current_text.id + "/ai_count"
-            await axios.post(q)
+            await axios.post(q).catch(error => {console.log(error)})
             var randomText = this.texts[Math.floor(Math.random()*this.texts.length)]
             this.current_text = randomText
       } catch (error) {

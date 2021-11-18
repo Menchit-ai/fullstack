@@ -29,7 +29,7 @@ export default {
   methods: {
     async submit(){
       try {
-        await axios.post("users/",this.form)
+        await axios.post("users/",this.form).catch(error => {console.log(error)})
         this.form.email = null
         this.form.password = null
       } catch (error) {

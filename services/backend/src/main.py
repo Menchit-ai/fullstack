@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql.sqltypes import String
 from starlette.middleware.cors import CORSMiddleware
 
-from . import init_kong_keycloak
+# from . import init_kong_keycloak
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine

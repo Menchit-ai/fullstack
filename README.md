@@ -46,6 +46,14 @@ Docker is used to launch all the necessary resources of the project : the backen
 
 ### FastAPI
 
+All the backend was done with FastAPI, a very easy to access Python framework for making functional APIs. This is where all operations take place, especially in connection with the PostgreSQL database.
+
+### VueJS
+
+VueJS is a javascript framework that we decided to use because the documentation was simple and complete. The .vue files allow us to display different elements communicating with the backend : it is with this that the user connects, proposes his texts and plays the quiz. The frontend folder is organized with several .vue files for the different links of the site, and a .scss file to manage the general display.
+
+### PostgreSQL
+
 
 
 ## Limits

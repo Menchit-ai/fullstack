@@ -24,6 +24,17 @@ docker compose rm -s -v gpt2
 
 The application starts with 3 texts from human's hand and with 2 precreated account. The 3 texts will be associated with the two users.This means that the ai should start to create 3 new texts and add them to the database.
 
+## Technology
+
+This project make use of several technologies list below :
+
+- Docker
+- Fastapi
+- Vuejs
+- Kong
+- Keycloak
+- GPT-2
+
 ## Limits
 
 Normally, the frontend should be accessible pathing by kong. But due to compilations and project organisations' infos that I don't have, I didn't success to load the Vue components in browser. So the frontend is only accessible through itself. This mean that when the front access the back and if the oidc plugin is used, he is blocked by cors policy. I didn't find a workaround so I decided to not use keycloak. Keycloak works, it's database is update if a user is created but the users are just not redirected on it (because I have comment the line that put the oidc plugin in kong).

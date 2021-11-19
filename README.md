@@ -1,4 +1,8 @@
-# Powered AI
+# FullStack Project : Powered AI
+
+## Project presentation
+
+The main idea of the project is to make a quiz site based on artificial intelligence, where users will have to guess if a text was written by a human or an AI. The principle of the site is collaborative, users can therefore connect to write their text and submit it to the site, text which will be offered to other users in the quiz section.
 
 ## Installation
 

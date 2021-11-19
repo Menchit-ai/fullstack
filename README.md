@@ -54,7 +54,11 @@ VueJS is a javascript framework that we decided to use because the documentation
 
 ### PostgreSQL
 
+The SQL database stored in the backend folder is used to store all user information, as well as the texts produced by the GPT-2 AI.
 
+### Kong
+
+Kong is a tool that goes between the selected operations on the frontend and the backend. It is an API gateway which is normally linked to Keycloak so that it can then identify itself. However, Keycloak could not be implemented, so Kong only serves as a gateway between the front and the back.
 
 ## Limits
 

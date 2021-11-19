@@ -28,7 +28,8 @@ The application starts with 3 texts from human's hand and with 2 precreated acco
 
 This project make use of several technologies list below :
 
-- Docker
+- Docker ![title]images/docker.jpg
+- PostgreSQL
 - Fastapi
 - Vuejs
 - Kong

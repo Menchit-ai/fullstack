@@ -36,7 +36,7 @@ export default {
       try{
         this.warning = null
         this.users = null
-        const response = await axios.get("users/").catch(error => {console.log(error)})
+        const response = await axios.get("users/")
         this.users = response.data
       }catch(error){
         console.log(error)
@@ -46,10 +46,10 @@ export default {
     async getUser() {
     try {
         if (this.id == 0){
-            await this.getAllUsers().catch(error => {console.log(error)})
+            await this.getAllUsers()
             return
             }
-        const response = await axios.get("users/" + this.id).catch(error => {console.log(error)})
+        const response = await axios.get("users/" + this.id)
         this.users = [response.data]
         this.warning = null
     } catch (error) {

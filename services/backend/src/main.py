@@ -85,12 +85,14 @@ def read_text(text_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Text not found")
     return db_text
 
-@app.post("/api/users/{user_email}/texts/", response_model=schemas.Text)
+@app.post("/api/users/{user_email}/texts/{pwd}", response_model=schemas.Text)
 def create_text_for_user(user_email, pwd, text: schemas.TextCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user_email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return crud.create_user_text(db=db, text=text, user_email=user_email)
+    text = crud.create_user_text(db=db, text=text, user_email=user_email, user_pwd=pwd)
+    if text == -1 : raise HTTPException(status_code=401, detail="Bad password")
+    return text
 
 @app.post("/api/texts/{text_id}/human_count", response_model=schemas.Text)
 def count_text_as_human(text_id: int, db: Session = Depends(get_db)):

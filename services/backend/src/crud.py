@@ -94,8 +94,10 @@ def get_texts_by_owner(db: Session, user_id: int):
 def get_human_texts(db: Session):
     return db.query(models.Text).order_by(models.Text.id.asc()).filter(models.Text.owner_id != 0).all()
 
-def create_user_text(db: Session, text: schemas.TextCreate, user_email: String):
+def create_user_text(db: Session, text: schemas.TextCreate, user_email: String, user_pwd: String):
     user_id = get_user_by_email(db, user_email).id
+    right_pwd = get_user_by_email(db, user_email).hashed_password
+    if not right_pwd == hashlib.sha256(user_pwd.encode('utf-8')).hexdigest(): return -1
     db_text = models.Text(**text.dict(), owner_id=user_id, is_human_count=0, is_ai_count=0)
     db.add(db_text)
     db.commit()

@@ -2,11 +2,11 @@
 <template>
   <div id="nav" Align=Center>
     <p/>
-    <button><router-link to="/">Home</router-link></button>
-    <button><router-link to="/suser">User</router-link></button>
-    <button><router-link to="/ctext">Write new text</router-link></button>
-    <button><router-link to="/quizz">Quizz</router-link></button>
-    <button><router-link to="/cuser">Register</router-link></button>
+    <router-link tag="button" to="/">Home</router-link>
+    <router-link tag="button" to="/suser">User</router-link>
+    <router-link tag="button" to="/ctext">Write new text</router-link>
+    <router-link tag="button" to="/quizz">Quizz</router-link>
+    <router-link tag="button" to="/cuser">Register</router-link>
     <p/>
     <div class="couverture">
       <h1 style="background-color:powderblue;color:black;font-family:Verdana, sans-serif;"> AI or Human ? </h1>

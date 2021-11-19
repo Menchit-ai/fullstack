@@ -26,7 +26,7 @@ export default {
   methods: {
     async submit(){
       try {
-        const q = "users/" + this.user_mail + "/texts/"
+        const q = "users/" + this.user_mail + "/texts/" + this.pwd
         await axios.post(q,this.form)
         this.form.body = null
         this.user_mail = null

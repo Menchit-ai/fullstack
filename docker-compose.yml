@@ -10,13 +10,13 @@ services:
     build: ./services/frontend
     container_name: frontend
     ports:
-    - "8085:3000"
+    - "8085:8085"
     depends_on: 
       backend:
         condition: service_started
       kong:
         condition: service_healthy
-    # restart: always
+    restart: always
     networks:
       - default
 
@@ -41,7 +41,7 @@ services:
         condition: service_healthy
       keycloak:
         condition: service_healthy
-    # restart: always
+    restart: always
     networks:
       - default
 
@@ -68,22 +68,22 @@ services:
       - default
 
   # gpt-2
-  # gpt2:
-  #   build: ./services/gpt-2
-  #   container_name: gpt2
-  #   command: "python3 auto_generate_texts.py"
-  #   environment:
-  #     BACKEND_USER: ${BACKEND_USER}
-  #     BACKEND_PASSWORD: ${BACKEND_PASSWORD}
-  #     BACKEND_DB: ${BACKEND_DB}
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     backend:
-  #       condition: service_started
-  #   networks:
-  #     - default
-  #   restart: on-failure
+  gpt2:
+    build: ./services/gpt-2
+    container_name: gpt2
+    command: "python3 auto_generate_texts.py"
+    environment:
+      BACKEND_USER: ${BACKEND_USER}
+      BACKEND_PASSWORD: ${BACKEND_PASSWORD}
+      BACKEND_DB: ${BACKEND_DB}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    networks:
+      - default
+    restart: on-failure
 
   kong-migration:
     image: kong:2.6.0

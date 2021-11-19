@@ -17,5 +17,5 @@ RUN npm run build
 
 RUN npm install --global lite-server
 
-EXPOSE 3000
-CMD [ "lite-server", "--baseDir=dist" ]
+EXPOSE 8085
+CMD [ "npm", "run", "serve", "--", "--port", "8085" ]

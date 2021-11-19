@@ -1,3 +1,5 @@
+# This file is only used to store some texts for initialisation
+
 hamlet = """LORD POLONIUS\n
 Marry, well said; very well said. Look you, sir,\n
 Inquire me first what Danskers are in Paris;\n

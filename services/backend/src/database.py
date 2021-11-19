@@ -12,7 +12,6 @@ POSTGRES_DB = os.environ["BACKEND_DB"]
 BACKEND_DB = os.environ["BACKEND_DB"]
 
 SQLALCHEMY_DATABASE_URL = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@postgres/{BACKEND_DB}'
-# SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:password@localhost/postgres'
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -17,7 +17,7 @@ PASSWORD = 'Pa55w0rd'
 MASTER_REALM_NAME = "master"
 REALM_NAME = "master"
 
-
+# establishing connection with keycloak as an admin
 keycloak_admin = KeycloakAdmin(
     server_url=KEYCLOAK_URL,
     username=USERNAME,
@@ -67,7 +67,7 @@ services = [
     }
 ]
 print("Starting initialisation of kong")
-
+# using deck to configure kong with the kong.yaml file
 os.system("deck --kong-addr  http://kong:8001 --timeout 600 sync")
 
 for service in services:
@@ -85,6 +85,7 @@ for service in services:
         'config.introspection_endpoint':introspection_url,
         'config.discovery':discovery_url
     }
+    # uncomment this line to add the oidc plugin to services' route
     # requests.post(f'http://{KONG_HOST_IP}:{KONG_PORT}/services/{created_service_id}/plugins', data=oidc_data)
 
     print(name, "updated !")

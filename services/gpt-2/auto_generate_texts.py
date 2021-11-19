@@ -47,7 +47,7 @@ def update_db():
         except Exception as e: print(e)
     print("DB UPDATED !\n")
 
-
+# always generate new texts if there is more humans' texts than ai's texts
 while True:
     print("\n"+"_"*20 + " STARTING " + "_"*20)
     next_start = DT.datetime.now() + delta_time

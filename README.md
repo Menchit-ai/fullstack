@@ -40,6 +40,14 @@ This project make use of several technologies list below :
 - Keycloak
 - GPT-2
 
+### Docker
+
+Docker is used to launch all the necessary resources of the project : the backend made with FastAPI, the frontend made with Vue, the database PostgreSQL, Kong the API Gateway and GPT-2 which is the text AI used for the quiz.
+
+### FastAPI
+
+
+
 ## Limits
 
 Normally, the frontend should be accessible pathing by kong. But due to compilations and project organisations' infos that I don't have, I didn't success to load the Vue components in browser. So the frontend is only accessible through itself. This mean that when the front access the back and if the oidc plugin is used, he is blocked by cors policy. I didn't find a workaround so I decided to not use keycloak. Keycloak works, it's database is update if a user is created but the users are just not redirected on it (because I have comment the line that put the oidc plugin in kong).

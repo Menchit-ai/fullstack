@@ -12,7 +12,13 @@ will take approximately 20 seconds.
 
 3 minutes after the application started, the AI will connect to the db and check how many humans' texts are present. It will then complete
 so there is exactly the same number of humans' texts and ai's texts. The ai is heavy and creating a single text could be pretty long.
-This completion will occure every 10 minutes.
+This completion will occure every 10 minutes. Due to pc limitation, kong could be long when the ai is computing new texts, if a query does not resolve
+or result with a 404 not found, maybe it is juste the computer that is strugling. If this is a problem you can shutdown the container with the ai
+by typing :
+
+```bash
+docker compose rm -s -v gpt2
+```
 
 The application starts with 3 texts from human's hand and with 2 precreated account. The 3 texts will be associated with the two users.
 This means that the ai should start to create 3 new texts and add them to the database.

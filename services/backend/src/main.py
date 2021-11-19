@@ -1,13 +1,12 @@
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
-from fastapi.responses import FileResponse
 from fastapi.security import OAuth2PasswordBearer
 from keycloak import KeycloakOpenID
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.sqltypes import String
 from starlette.middleware.cors import CORSMiddleware
 
+# launch initialisation for kong and keycloak
 from . import init_kong_keycloak
 
 from . import crud, models, schemas
@@ -45,7 +44,7 @@ def get_db():
 
 @app.get("/api")
 def hello_world():
-    return "Bienvenue sur notre site de quizz : IA ou humain ?"
+    return "Welcome on our site, AI or Human ?"
 
 @app.post("/api/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):

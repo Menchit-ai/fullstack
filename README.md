@@ -28,7 +28,7 @@ The application starts with 3 texts from human's hand and with 2 precreated acco
 
 This project make use of several technologies list below :
 
-- Docker ![Alt text](images/docker.jpg){:class="img-responsive"}
+- Docker
 - PostgreSQL
 - Fastapi
 - Vuejs
